@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    public enum State { SPAWNING, WAITING, PAUSE }
+    public enum State { SPAWNING, WAITING, PAUSE, STOP}
     public State state;
 
     public GameObject waveText;
+    public GameObject gameOverPanel;
     public GameObject fallingHoboSpawner;
     public GameObject fallingHobo;
-    public GameObject hobo;
+    public GameObject[] hobos;
     public GameObject[] hoboSpawners;
     public int enemiesKilled = 0;
     public int wave = 0;
@@ -24,6 +25,15 @@ public class GameManager : MonoBehaviour {
     public float timer = 2;
     private float resetTimer;
 
+    private void OnEnable()
+    {
+        Player.KillPlayer += PlayerDead;
+    }
+
+    private void OnDisable()
+    {
+        Player.KillPlayer -= PlayerDead;
+    }
 
     public int EnemiesKilled
     {
@@ -43,6 +53,12 @@ public class GameManager : MonoBehaviour {
         SwitchWave();
         SetSpawnPoints();
         StartCoroutine(CountDown());
+    }
+
+    private void PlayerDead()
+    {
+        state = State.STOP;
+        gameOverPanel.SetActive(true);
     }
 
     private void SwitchWave()
@@ -65,17 +81,20 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator CountDown()
     {
-        waveText.GetComponent<WaveIndicator>().WaveUpdate(wave);
-        float countDownTimer = 3f;
-        while(countDownTimer > 0)
+        if(state != State.STOP)
         {
-            countDownTimer -= Time.deltaTime;
+            waveText.GetComponent<WaveIndicator>().WaveUpdate(wave);
+            float countDownTimer = 3f;
+            while (countDownTimer > 0)
+            {
+                countDownTimer -= Time.deltaTime;
 
-            yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+            }
+
+            state = State.SPAWNING;
+            StartCoroutine(RunGame());
         }
-
-        state = State.SPAWNING;
-        StartCoroutine(RunGame());
     }
 
     IEnumerator RunGame()
@@ -84,8 +103,11 @@ public class GameManager : MonoBehaviour {
         {
             if(state == State.SPAWNING)
             {
-                hoboSpawners[spawnIndex1].GetComponent<Spawn>().SpawnEnemy(hobo);
-                hoboSpawners[spawnIndex2].GetComponent<Spawn>().SpawnEnemy(hobo);
+                // TODO create a function that handles spawning chances based on wave number
+                int hoboIndex = Random.Range(0, 3);
+                hoboSpawners[spawnIndex1].GetComponent<Spawn>().SpawnEnemy(hobos[hoboIndex]);
+                hoboIndex = Random.Range(0, 3);
+                hoboSpawners[spawnIndex2].GetComponent<Spawn>().SpawnEnemy(hobos[hoboIndex]);
                 numSpawning -= 2;
 
                 if(numSpawning <= 0)
@@ -111,7 +133,11 @@ public class GameManager : MonoBehaviour {
                     }
                 }
                 yield return new WaitForEndOfFrame();
-            }          
+            } 
+            else
+            {
+                break;
+            }
         }
 
         StartCoroutine(CountDown());

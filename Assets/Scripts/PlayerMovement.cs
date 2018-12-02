@@ -8,6 +8,16 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody2D rb2d;
     private Vector3 moveDirection;
 
+    private void OnEnable()
+    {
+        Player.KillPlayer += PlayerDead;
+    }
+
+    private void OnDisable()
+    {
+        Player.KillPlayer -= PlayerDead;
+    }
+
     private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -24,6 +34,11 @@ public class PlayerMovement : MonoBehaviour {
             Move();
         }
 	}
+
+    private void PlayerDead()
+    {
+        speed = 0;
+    }
 
     private void Move()
     {
