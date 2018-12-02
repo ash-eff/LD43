@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 95c6d58e5ca29c142988aecaf5fe4a3f
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Super Retro M54
+  fontNames:
+  - Super Retro M54
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 909c09e7c2926294592530d7491ceefd, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

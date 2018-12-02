@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     public bool canBeDamaged = true;
     public float iFrameTime;
     public float timer;
+    public GameObject[] life;
 
     private Collider2D coll;
     private Color tmp;
@@ -36,6 +37,10 @@ public class Player : MonoBehaviour {
             coll.enabled = false;
             StartCoroutine(IFrames());
             lives -= 1;
+            if(lives >= 0)
+            {
+                life[lives].SetActive(false);
+            }
         }
     }
 

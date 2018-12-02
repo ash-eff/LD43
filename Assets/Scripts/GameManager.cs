@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour {
 
     public enum State { SPAWNING, WAITING, PAUSE, STOP}
     public State state;
+    public TextMeshProUGUI tpro;
 
     public GameObject waveText;
     public GameObject gameOverPanel;
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour {
     public int numToKill;
     private int numSpawning;
     public int baseNumSpawning;
+    private int score;
 
     public float timer = 2;
     private float resetTimer;
@@ -46,12 +49,23 @@ public class GameManager : MonoBehaviour {
         set { numToKill -= value; }
     }
 
+    public int ScoreUpdate
+    {
+        set { score = value; }
+        get { return score; }
+    }
+
 
     private void Start()
     {
         state = State.PAUSE;
         resetTimer = timer;
         SelectWave();
+    }
+
+    private void Update()
+    {
+        tpro.text = score.ToString();
     }
 
     private void SelectWave()

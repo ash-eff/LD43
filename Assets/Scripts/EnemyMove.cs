@@ -188,6 +188,8 @@ public class EnemyMove : MonoBehaviour {
 
         GameManager gm = FindObjectOfType<GameManager>().GetComponent<GameManager>();
         gm.SendMessage("MeatGrinder");
+        int score = Random.Range(10, 26);
+        gm.ScoreUpdate += score;
         Destroy(gameObject);
     }
 
