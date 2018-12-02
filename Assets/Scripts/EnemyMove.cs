@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyMove : MonoBehaviour {
 
+    public float disAmount = 0.1f;
     public enum EnemyType { MELEE, RUNNER, RANGED}
     public EnemyType enemyType;
     public GameObject bottle;
@@ -17,6 +18,8 @@ public class EnemyMove : MonoBehaviour {
     public float minSpeed;
     public float maxSpeed;
     private float runnerTimer = 3f;
+    private Collider2D coll;
+    private Renderer mat;
 
     private void OnEnable()
     {
@@ -30,6 +33,8 @@ public class EnemyMove : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        coll = GetComponent<Collider2D>();
+        mat = GetComponent<Renderer>();
         speed = Random.Range(minSpeed, maxSpeed);
         rb2d = GetComponent<Rigidbody2D>();
         target = FindObjectOfType<Player>().gameObject;
@@ -161,6 +166,29 @@ public class EnemyMove : MonoBehaviour {
             bottle.GetComponent<Bottle>().moveDirection = target.transform.position;
             yield return new WaitForSeconds(4f);
         }
+    }
+
+    public void EnemyDeath()
+    {
+        speed = 0;
+        coll.enabled = false;
+        StartCoroutine(KillHobo());
+    }
+
+    IEnumerator KillHobo()
+    {
+        disAmount = 0.1f;
+        while (disAmount < 1f)
+        {
+            print("dissolve");
+            disAmount += 0.1f;
+            mat.material.SetFloat("_Level", disAmount);
+            yield return new WaitForSeconds(.05f);
+        }
+
+        GameManager gm = FindObjectOfType<GameManager>().GetComponent<GameManager>();
+        gm.SendMessage("MeatGrinder");
+        Destroy(gameObject);
     }
 
     void PlayerDead()

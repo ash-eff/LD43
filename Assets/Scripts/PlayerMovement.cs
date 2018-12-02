@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour {
 
         if(moveDirection != Vector3.zero)
         {
+            print("moving");
             Move();
         }
 	}
@@ -42,6 +43,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Move()
     {
+        print("move move move");
         rb2d.MovePosition(transform.position + moveDirection.normalized * speed * Time.deltaTime);
     }
 }

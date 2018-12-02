@@ -11,16 +11,17 @@ public class GameManager : MonoBehaviour {
     public GameObject gameOverPanel;
     public GameObject fallingHoboSpawner;
     public GameObject fallingHobo;
-    public GameObject[] hobos;
-    public GameObject[] hoboSpawners;
+    public List<GameObject> hobos = new List<GameObject>();
+    public GameObject[] hoboTypes;
+    public List<GameObject> hoboSpawners = new List<GameObject>();
+    public GameObject[] hoboSpawnLoc;
     public int enemiesKilled = 0;
     public int wave = 0;
+    public int hoboIndex = 0;
 
     public int numToKill;
     private int numSpawning;
     public int baseNumSpawning;
-    public int spawnIndex1;
-    public int spawnIndex2;
 
     public float timer = 2;
     private float resetTimer;
@@ -50,33 +51,85 @@ public class GameManager : MonoBehaviour {
     {
         state = State.PAUSE;
         resetTimer = timer;
-        SwitchWave();
-        SetSpawnPoints();
+        SelectWave();
+    }
+
+    private void SelectWave()
+    {
+        wave += 1;
+        PickSpawnLocations();
+    }
+
+    private void PickSpawnLocations()
+    {
+        // pick a random number of spawn locations
+        int numOfSpawnLocations = Random.Range(2, 5);
+        // clear list if it's not empty
+        if(hoboSpawners.Count > 0)
+        {
+            hoboSpawners.Clear();
+        }
+        // pick random spawn locations out the 4 available and add it to a list
+        for(int i = 0; i < numOfSpawnLocations; i++)
+        {
+            hoboSpawners.Add(hoboSpawnLoc[Random.Range(0, 4)]);
+        }
+
+        AssembleWaves();
+    }
+
+    private void AssembleWaves()
+    {
+        hoboIndex = 0;
+        // set a number of hobos to spawn
+        numSpawning = baseNumSpawning * wave / 2;
+        numToKill = numSpawning;
+        // clear list if it's not empty
+        if (hobos.Count > 0)
+        {
+            hobos.Clear();
+        }
+        // create list of hobos to spawn
+        for (int i = 0; i < numSpawning; i++)
+        {
+            
+            int maxChances = GetMaxChances();
+            int chances = Random.Range(1, maxChances + 1);
+
+            if (wave < 2)
+            {
+                hobos.Add(hoboTypes[0]);
+            }
+            else if (chances <= 5)
+            {
+                hobos.Add(hoboTypes[1]);
+            }
+            else if (chances > 5 && chances <= 10)
+            {
+                hobos.Add(hoboTypes[2]);
+            }
+            else
+            {
+                hobos.Add(hoboTypes[0]);
+            }
+        }
+
         StartCoroutine(CountDown());
     }
 
-    private void PlayerDead()
+    private int GetMaxChances()
     {
-        state = State.STOP;
-        gameOverPanel.SetActive(true);
-    }
+        int maxChances = 100;
+        if (wave < 25)
+        {
+            maxChances = 101 - (wave * 2);
+        }
+        else
+        {
+            maxChances = 50;
+        }
 
-    private void SwitchWave()
-    {
-        wave += 1;
-    }
-
-    private void SetSpawnPoints()
-    {
-        spawnIndex1 = Random.Range(0, 4);
-        spawnIndex2 = Random.Range(0, 4);
-        numSpawning = baseNumSpawning * wave;
-        numToKill = numSpawning;
-    }
-
-    public void MeatGrinder()
-    {
-        Instantiate(fallingHobo, new Vector3(Random.Range(-41f, -39f), fallingHoboSpawner.transform.position.y, 0.0f), Quaternion.identity);
+        return maxChances;
     }
 
     IEnumerator CountDown()
@@ -99,27 +152,27 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator RunGame()
     {
-        while(state != State.PAUSE)
+        while (state != State.PAUSE)
         {
             if(state == State.SPAWNING)
             {
-                // TODO create a function that handles spawning chances based on wave number
-                int hoboIndex = Random.Range(0, 3);
-                hoboSpawners[spawnIndex1].GetComponent<Spawn>().SpawnEnemy(hobos[hoboIndex]);
-                hoboIndex = Random.Range(0, 3);
-                hoboSpawners[spawnIndex2].GetComponent<Spawn>().SpawnEnemy(hobos[hoboIndex]);
-                numSpawning -= 2;
+                // pick one of the spawn locations from the list
+                int spawnIndex = Random.Range(0, hoboSpawners.Count);
+                // send it the information to spawn a hobo
+                hoboSpawnLoc[spawnIndex].GetComponent<Spawn>().SpawnEnemy(hobos[hoboIndex]);
+                // tell the game that it spawned a hobo
+                numSpawning -= 1;
+                hoboIndex += 1;
 
-                if(numSpawning <= 0)
+                if (numSpawning <= 0)
                 {
                     state = State.WAITING;
                 }
 
                 yield return new WaitForSeconds(.5f);
             }
-            else if(state == State.WAITING)
+            else if (state == State.WAITING)
             {
-                Debug.Log("Wait");
                 if (numToKill <= 0 && numSpawning <= 0)
                 {
                     timer -= Time.deltaTime;
@@ -127,19 +180,34 @@ public class GameManager : MonoBehaviour {
                     if (timer <= 0)
                     {
                         timer = resetTimer;
-                        SwitchWave();
-                        SetSpawnPoints();
+                        SelectWave();
                         state = State.PAUSE;
                     }
                 }
+
                 yield return new WaitForEndOfFrame();
             } 
             else
             {
                 break;
             }
+
+            
         }
 
         StartCoroutine(CountDown());
+    }
+
+
+
+    private void PlayerDead()
+    {
+        state = State.STOP;
+        gameOverPanel.SetActive(true);
+    }
+
+    public void MeatGrinder()
+    {
+        Instantiate(fallingHobo, new Vector3(Random.Range(-41f, -39f), fallingHoboSpawner.transform.position.y, 0.0f), Quaternion.identity);
     }
 }

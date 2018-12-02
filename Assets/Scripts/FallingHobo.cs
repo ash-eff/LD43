@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FallingHobo : MonoBehaviour {
 
+    public GameObject blood;
     private float speed = 4f;
     private Rigidbody2D rb2d;
 
@@ -21,6 +22,7 @@ public class FallingHobo : MonoBehaviour {
     {
         if(collision.gameObject.tag == "Grinder")
         {
+            Instantiate(blood, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

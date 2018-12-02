@@ -30,7 +30,7 @@ public class Player : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (canBeDamaged && collision.gameObject.tag == "Hobo")
+        if (canBeDamaged && collision.gameObject.tag == "Hobo" || canBeDamaged && collision.gameObject.tag == "Fire")
         {
             canBeDamaged = false;
             coll.enabled = false;

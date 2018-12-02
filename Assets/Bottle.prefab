@@ -99,7 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c053d13848417ae4fb9f0ebd5851c8bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDirection: {x: 0, y: 0, z: 0}
+  moveDirection: {x: 6.9689436, y: -5.0332794, z: 0}
+  fireIndicator: {fileID: 1691763424421890, guid: 8d4fb6224bb8d494083f5bf3f1d0a33d,
+    type: 2}
+  fireArea: {fileID: 1998633254561914, guid: 81c715537cf99604594e7973f0a43591, type: 2}
 --- !u!212 &212587353137882950
 SpriteRenderer:
   m_ObjectHideFlags: 1
