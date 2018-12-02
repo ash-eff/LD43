@@ -70,9 +70,9 @@ public class EnemyMove : MonoBehaviour {
     {
         Vector3 dir;
 
-        if(transform.position.x > 3 || transform.position.x < -3)
+        if(transform.position.x > 5.5 || transform.position.x < -.5)
         {
-            if(transform.position.x > 3)
+            if(transform.position.x > 5.5)
             {
                 dir = Vector3.left;
             }

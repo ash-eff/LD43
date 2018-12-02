@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FallingHobo : MonoBehaviour {
 
-    private float speed = 10f;
+    private float speed = 4f;
     private Rigidbody2D rb2d;
 
     private void Start()

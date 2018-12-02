@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour {
 
     public void MeatGrinder()
     {
-        Instantiate(fallingHobo, new Vector3(Random.Range(-48.5f, -31.5f), fallingHoboSpawner.transform.position.y, 0.0f), Quaternion.identity);
+        Instantiate(fallingHobo, new Vector3(Random.Range(-41f, -39f), fallingHoboSpawner.transform.position.y, 0.0f), Quaternion.identity);
     }
 
     IEnumerator CountDown()
