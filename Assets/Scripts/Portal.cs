@@ -6,8 +6,8 @@ public class Portal : MonoBehaviour {
 
     private Rigidbody2D rb2d;
     public Vector3 moveDirection;
-    private float speed = 15f;
-    private float timer = 1.5f;
+    private float speed = 20f;
+    private float timer = 3f;
 
     private void Start()
     {

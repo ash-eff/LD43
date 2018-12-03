@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
@@ -12,6 +13,10 @@ public class Player : MonoBehaviour {
     public float iFrameTime;
     public float timer;
     public GameObject[] life;
+    public GameObject dmgIndicator;
+    public Color A = Color.magenta;
+    public Color B = Color.blue;
+    public float speed = 1.0f;
 
     private Collider2D coll;
     private Color tmp;
@@ -55,15 +60,27 @@ public class Player : MonoBehaviour {
     IEnumerator IFrames()
     {
         timer = iFrameTime;
-        while(timer > 0)
+        StartCoroutine(DamageFlash());
+        while (timer > 0)
         {
             timer -= Time.deltaTime;
-            
 
             yield return new WaitForEndOfFrame();
         }
 
         coll.enabled = true;
         canBeDamaged = true;
+    }
+
+    IEnumerator DamageFlash()
+    {
+        float alpha = dmgIndicator.GetComponent<Image>().color.a;
+        Color color = dmgIndicator.GetComponent<Image>().color;
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 2)
+        {
+            Color newColor = new Color(color.r, color.b, color.g, Mathf.Lerp(1, 0, t));
+            dmgIndicator.GetComponent<Image>().color = newColor;
+            yield return null;
+        }
     }
 }

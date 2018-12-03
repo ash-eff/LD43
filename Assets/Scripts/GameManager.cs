@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -217,11 +218,18 @@ public class GameManager : MonoBehaviour {
     private void PlayerDead()
     {
         state = State.STOP;
-        gameOverPanel.SetActive(true);
+        if(enemiesKilled == 0)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        else
+        {
+            gameOverPanel.SetActive(true);
+        }
     }
 
     public void MeatGrinder()
     {
-        Instantiate(fallingHobo, new Vector3(Random.Range(-41f, -39f), fallingHoboSpawner.transform.position.y, 0.0f), Quaternion.identity);
+        Instantiate(fallingHobo, new Vector3(Random.Range(-41f, -39f), fallingHoboSpawner.transform.position.y, -1f), Quaternion.identity);
     }
 }

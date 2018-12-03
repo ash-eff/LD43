@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4130416230563502}
+  - component: {fileID: 114142287368727524}
   m_Layer: 0
   m_Name: Blood Spray
   m_TagString: Bullet
@@ -70,6 +71,17 @@ Transform:
   m_Father: {fileID: 4130416230563502}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &114142287368727524
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1487844003786440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27487084722f22149996e1a1821cd436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!198 &198918562474465158
 ParticleSystem:
   m_ObjectHideFlags: 1

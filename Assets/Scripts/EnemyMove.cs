@@ -214,7 +214,6 @@ public class EnemyMove : MonoBehaviour {
         disAmount = 0.1f;
         while (disAmount < 1f)
         {
-            print("dissolve");
             disAmount += 0.1f;
             mat.material.SetFloat("_Level", disAmount);
             yield return new WaitForSeconds(.05f);

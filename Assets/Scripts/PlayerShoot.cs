@@ -23,27 +23,7 @@ public class PlayerShoot : MonoBehaviour {
 
     void Update ()
     {
-        shootingDirection = Vector3.zero;
-
-        if (Input.GetKey("up"))
-        {
-            shootingDirection.y = 1;
-        }
-
-        if (Input.GetKey("down"))
-        {
-            shootingDirection.y = -1;
-        }
-
-        if (Input.GetKey("right"))
-        {
-            shootingDirection.x = 1;
-        }
-
-        if (Input.GetKey("left"))
-        {
-            shootingDirection.x = -1;
-        }
+        shootingDirection = new Vector3(Input.GetAxisRaw("HorizontalShoot"), Input.GetAxisRaw("VerticalShoot"));
 
         Shoot();
     }
