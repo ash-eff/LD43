@@ -20,6 +20,7 @@ public class EnemyMove : MonoBehaviour {
     private float runnerTimer = 3f;
     private Collider2D coll;
     private Renderer mat;
+    private Animator anim;
 
     private void OnEnable()
     {
@@ -33,6 +34,7 @@ public class EnemyMove : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
         mat = GetComponent<Renderer>();
         speed = Random.Range(minSpeed, maxSpeed);
@@ -57,12 +59,20 @@ public class EnemyMove : MonoBehaviour {
             if(enemyType == EnemyType.MELEE)
             {
                 transform.position = Vector3.MoveTowards(transform.position, target.transform.position, step);
+                Vector3 vectorToTarget = target.transform.position - transform.position;
+                float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
+                Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+                transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * maxSpeed);
             }
            
             if(enemyType == EnemyType.RUNNER)
             {
                 transform.position += direction * step;
-                if(runnerTimer <= 0)
+                Vector3 vectorToTarget = direction - transform.position;
+                float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
+                Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+                transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * maxSpeed);
+                if (runnerTimer <= 0)
                 {
                     FindObjectOfType<GameManager>().NumToKill = 1;
                     Destroy(gameObject);          
@@ -107,12 +117,17 @@ public class EnemyMove : MonoBehaviour {
 
     IEnumerator StaggeredMovement()
     {
+        anim.SetBool("walking", true);
         float timer = .5f;
         while(timer > 0)
         {
+            
             timer -= Time.deltaTime;
             transform.position += direction * speed * Time.deltaTime;
-
+            Vector3 vectorToTarget = direction - transform.position;
+            float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
+            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * maxSpeed);
             yield return new WaitForEndOfFrame();
         }
 
@@ -148,7 +163,10 @@ public class EnemyMove : MonoBehaviour {
         {
             timer -= Time.deltaTime;
             transform.position += newDirection * speed * Time.deltaTime;
-
+            Vector3 vectorToTarget = newDirection;
+            float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
+            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * maxSpeed);
             yield return new WaitForEndOfFrame();
         }
 
@@ -158,13 +176,29 @@ public class EnemyMove : MonoBehaviour {
 
     IEnumerator ThrowBottles()
     {
+        anim.SetBool("walking", false);
+        StartCoroutine(FaceTarget());
         while (true)
         {
-            // turn toward player
-
-            GameObject beerBottle = Instantiate(bottle, transform.position, Quaternion.identity);
+            anim.SetBool("throwing", true);
             bottle.GetComponent<Bottle>().moveDirection = target.transform.position;
-            yield return new WaitForSeconds(4f);
+            GameObject beerBottle = Instantiate(bottle, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(.5f);
+            anim.SetBool("throwing", false);
+            yield return new WaitForSeconds(3.5f);
+        }
+    }
+
+    IEnumerator FaceTarget()
+    {
+        while (true)
+        {
+            Vector3 vectorToTarget = target.transform.position - transform.position;
+            float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
+            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * maxSpeed);
+
+            yield return new WaitForEndOfFrame();
         }
     }
 

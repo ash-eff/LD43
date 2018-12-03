@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 50667079806140126}
   - component: {fileID: 61027684416921862}
   - component: {fileID: 114120114063722682}
+  - component: {fileID: 95053385024564948}
   m_Layer: 8
   m_Name: Beer Bottle Hobo
   m_TagString: Hobo
@@ -37,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1715702147020236}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.676096, y: -4.6124063, z: 0}
+  m_LocalPosition: {x: -13.37, y: -0.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,19 +76,37 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.008225441, y: -0.0041127205}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 2}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5064821, y: 1.2549839}
   m_EdgeRadius: 0
+--- !u!95 &95053385024564948
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1715702147020236}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6441da1c7654c88478f68082af34d5fe, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114120114063722682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -99,11 +118,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b39ee6ef8bb6fb4caa0c87ef68241e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disAmount: 0.1
   enemyType: 2
   bottle: {fileID: 1207972444627302, guid: 7304356f944b42448b8c778ff3ec02f4, type: 2}
   minSpeed: 6
   maxSpeed: 8
-  mat: {fileID: 2100000, guid: 576bbfec18a56c04bb6c280198e4f54b, type: 2}
 --- !u!212 &212672553930428882
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -139,7 +158,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cd2828bc5992c784dacbc605eb580b97, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 97610ef36dcc5834d9766311993d8818, type: 3}
   m_Color: {r: 0, g: 1, b: 0.0575552, a: 1}
   m_FlipX: 0
   m_FlipY: 0

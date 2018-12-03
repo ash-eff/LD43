@@ -12,10 +12,12 @@ public class PlayerShoot : MonoBehaviour {
     private Vector3 shootingDirection;
     private RaycastHit2D ray;
     private GameObject bullet;
+    private Animator anim;
     private bool shooting = false;
 
     private void Start()
     {
+        anim = GetComponent<Animator>();
         StartCoroutine(ShootPortal());
     }
 
@@ -48,9 +50,12 @@ public class PlayerShoot : MonoBehaviour {
 
     private void Shoot()
     {
-        if(shootingDirection != Vector3.zero)
+        if (shootingDirection != Vector3.zero)
         {
             shooting = true;
+
+            float angle = Mathf.Atan2(shootingDirection.y, shootingDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
         else
         {
@@ -64,12 +69,13 @@ public class PlayerShoot : MonoBehaviour {
         {
             if(shooting)
             {
+                anim.SetBool("Shoot", true);
                 bullet = Instantiate(portalBullet, transform.position + shootingDirection, Quaternion.identity);
                 bullet.GetComponent<Portal>().moveDirection = shootingDirection;
             }
             else
             {
-                //Debug.Log("Waiting");
+                anim.SetBool("Shoot", false);
             }
 
             yield return new WaitForSeconds(timeBetweenShots);

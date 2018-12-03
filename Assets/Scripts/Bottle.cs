@@ -32,6 +32,7 @@ public class Bottle : MonoBehaviour {
                 spr.enabled = false;
                 Instantiate(fireArea, transform.position, Quaternion.identity);
                 isExploded = true;
+                Destroy(gameObject);
             }
         }
     }
